@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE CONCEPT | Smart Casual & Essenciais</title>
+    <meta name="description" content="Moda masculina inteligente, versátil e com preço justo.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            black: '#111111',
+                            dark: '#222222',
+                            gray: '#f9f9f9',
+                            accent: '#4B5563', 
+                            light: '#ffffff'
+                        },
+                        whatsapp: '#25D366'
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)',
+                        'modal': '0 20px 40px -10px rgba(0,0,0,0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base e Reset */
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; background-color: #f9f9f9; }
+
+        /* Scrollbars Customizadas */
+        ::-webkit-scrollbar { width: 6px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animações e Transições */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .product-img { transition: transform 0.6s ease; }
+        .product-card:hover .product-img { transform: scale(1.05); }
+
+        /* Componentes Funcionais */
+        .size-btn { transition: all 0.2s; }
+        .size-btn.selected { background-color: #111111; color: #fff; border-color: #111111; }
+        
+        .offcanvas { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .offcanvas-open { transform: translateX(0) !important; }
+        
+        .overlay { transition: opacity 0.3s; opacity: 0; pointer-events: none; }
+        .overlay-active { opacity: 1; pointer-events: auto; }
+
+        #quickview-modal { transition: opacity 0.3s, transform 0.3s; }
+        .quickview-active { opacity: 1 !important; transform: translate(-50%, -50%) scale(1) !important; pointer-events: auto !important; }
+
+        /* Toast Notifications */
+        .toast {
+            background: #fff; border-left: 4px solid #111; padding: 12px 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08); border-radius: 4px;
+            display: flex; align-items: center; gap: 12px;
+            transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.success { border-left-color: #25D366; }
+        
+        /* Filtro Ativo */
+        .filter-btn.active { color: #111; font-weight: 700; border-bottom: 2px solid #111; }
+    </style>
+</head>
+<body class="text-brand-dark flex flex-col min-h-screen">
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- TOP BAR -->
+    <div class="bg-brand-black text-white text-[10px] md:text-xs text-center py-2 font-medium tracking-wide">
+        Frete Grátis nas compras acima de R$ 299,00
+    </div>
+
+    <!-- HEADER -->
+    <header id="header" class="bg-white sticky top-0 z-40 border-b border-gray-100 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                
+                <!-- Menu Mobile -->
+                <div class="flex-1 md:hidden">
+                    <button id="btn-menu" class="text-xl text-brand-dark focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex flex-1 gap-6 text-xs font-bold uppercase tracking-wider text-gray-500">
+                    <a href="#vitrine" class="hover:text-brand-black transition-colors">Novidades</a>
+                    <a href="#vitrine" class="hover:text-brand-black transition-colors">Mais Vendidos</a>
+                    <a href="#sobre" class="hover:text-brand-black transition-colors">Nossa Proposta</a>
+                </nav>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer text-center" onclick="window.scrollTo(0,0)">
+                    <h1 class="font-extrabold text-2xl md:text-3xl tracking-tighter text-brand-black uppercase">
+                        THE CONCEPT
+                    </h1>
+                </div>
+
+                <!-- Ícones Direita -->
+                <div class="flex-1 flex items-center justify-end gap-5 text-lg md:text-xl text-brand-dark">
+                    <button class="hover:text-gray-500 transition-colors" aria-label="Busca"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button id="btn-cart" class="relative hover:text-gray-500 transition-colors group" aria-label="Carrinho">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-2 bg-brand-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- OFFCANVAS: MENU MOBILE -->
+    <div id="overlay-menu" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 overlay" onclick="closeModals()"></div>
+    <aside id="mobile-menu" class="fixed top-0 left-0 h-full w-[80%] max-w-[300px] bg-white z-50 transform -translate-x-full offcanvas flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <h2 class="font-extrabold text-lg tracking-tight uppercase">Menu</h2>
+            <button onclick="closeModals()" class="text-xl text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="flex flex-col text-sm font-bold uppercase tracking-wider text-brand-dark">
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Roupas', document.querySelectorAll('.filter-btn')[1])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Roupas Clássicas</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Calçados', document.querySelectorAll('.filter-btn')[2])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Calçados & Tênis</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Acessórios', document.querySelectorAll('.filter-btn')[3])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Acessórios</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Grooming', document.querySelectorAll('.filter-btn')[4])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Perfumaria</a></li>
+            </ul>
+        </div>
+        <div class="p-6 bg-gray-50">
+            <a href="https://wa.me/5511999999999" target="_blank" class="flex items-center justify-center gap-2 w-full bg-whatsapp text-white py-3 rounded font-bold uppercase text-xs hover:bg-green-600 transition-colors">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Suporte WhatsApp
+            </a>
+        </div>
+    </aside>
+
+    <!-- OFFCANVAS: CARRINHO -->
+    <div id="overlay-cart" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 overlay" onclick="closeModals()"></div>
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 transform translate-x-full offcanvas flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between p-5 border-b border-gray-100 bg-brand-black text-white">
+            <h3 class="font-bold uppercase tracking-widest text-sm flex items-center gap-2"><i class="fa-solid fa-bag-shopping"></i> Sacola de Compras</h3>
+            <button onclick="closeModals()" class="text-xl text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto flex flex-col bg-gray-50 relative">
+            <!-- Barra Frete Grátis Visual -->
+            <div class="bg-white p-3 border-b border-gray-200 text-center shadow-sm sticky top-0 z-10">
+                <p id="free-shipping-msg" class="text-xs font-medium text-brand-dark mb-2">Faltam <strong class="font-bold">R$ 299,00</strong> para Frete Grátis</p>
+                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="free-shipping-bar" class="bg-brand-black h-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="cart-items" class="p-4 flex flex-col gap-3">
+                <!-- Injetado via JS -->
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 p-5 bg-white shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+            <div class="mb-4">
+                <p class="font-bold text-[10px] uppercase tracking-widest text-gray-500 mb-2">Entrega</p>
+                <div class="flex flex-col gap-2 text-xs font-semibold">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="frete" value="0" class="accent-brand-black" checked onchange="calcTotal()">
+                        <span>Retirar na Loja (Grátis)</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="frete" value="25" class="accent-brand-black" onchange="calcTotal()">
+                        <span>Correios / Transportadora - <strong class="text-brand-black">R$ 25,00</strong></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center mb-1 text-xs text-gray-500 font-medium">
+                <span>Subtotal</span><span id="cart-subtotal" class="font-bold text-brand-dark">R$ 0,00</span>
+            </div>
+            <div class="flex justify-between items-end mb-5">
+                <span class="text-lg font-extrabold uppercase">Total</span>
+                <span id="cart-total" class="text-xl font-extrabold text-brand-black">R$ 0,00</span>
+            </div>
+
+            <button id="btn-checkout" onclick="checkoutWhatsApp()" class="w-full bg-brand-black text-white font-bold py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Fechar Pedido
+            </button>
+        </div>
+    </aside>
+
+    <!-- MODAL: QUICK VIEW (Responsivo e Seguro) -->
+    <div id="overlay-quickview" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] overlay" onclick="closeModals()"></div>
+    <div id="quickview-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white z-[70] w-[92%] sm:w-[75%] max-w-[800px] max-h-[85vh] flex flex-col md:flex-row rounded overflow-hidden shadow-modal opacity-0 pointer-events-none scale-95">
+        
+        <button onclick="closeModals()" class="absolute top-3 right-3 z-[80] text-gray-600 bg-white/90 backdrop-blur rounded-full w-8 h-8 flex items-center justify-center hover:bg-black hover:text-white shadow">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Esquerda: Imagem Responsiva -->
+        <div class="w-full md:w-1/2 bg-gray-100 h-64 md:h-auto relative shrink-0">
+            <!-- referrerpolicy="no-referrer" garante que a imagem carregue mesmo em iframes/codepen -->
+            <img id="qv-img" src="" alt="Produto" class="absolute inset-0 w-full h-full object-cover" referrerpolicy="no-referrer" crossorigin="anonymous">
+        </div>
+        
+        <!-- Direita: Informações (Scroll interno apenas aqui no mobile) -->
+        <div class="w-full md:w-1/2 flex flex-col overflow-y-auto bg-white p-5 md:p-8">
+            <div class="mb-4">
+                <span id="qv-brand" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">MARCA</span>
+                <h2 id="qv-title" class="text-xl md:text-2xl font-extrabold text-brand-black leading-tight mt-1 mb-2">Nome do Produto</h2>
+                <div class="flex items-end gap-2">
+                    <p id="qv-price" class="text-xl font-bold text-brand-black">R$ 0,00</p>
+                    <p id="qv-installments" class="text-xs text-gray-500 font-medium mb-1">6x sem juros</p>
+                </div>
+            </div>
+            
+            <p id="qv-desc" class="text-sm text-gray-600 leading-relaxed mb-6 hidden md:block">Modelagem inteligente desenvolvida para garantir o caimento perfeito. Peça essencial para um guarda-roupa versátil e autêntico.</p>
+            
+            <div class="mt-auto pt-4 border-t border-gray-100">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wide text-brand-dark">Tamanho</span>
+                </div>
+                
+                <div id="qv-sizes" class="flex flex-wrap gap-2 mb-6">
+                    <!-- Botões gerados via JS -->
+                </div>
+                
+                <input type="hidden" id="qv-id" value="">
+                
+                <button onclick="confirmAddToCart()" class="w-full bg-brand-black text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded hover:bg-gray-800 transition-colors flex justify-center items-center gap-2">
+                    Adicionar à Sacola
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow">
+        
+        <!-- HERO BANNER (Pexels - Altamente Confiável) -->
+        <section class="relative w-full h-[45vh] md:h-[65vh] bg-brand-dark overflow-hidden">
+            <img src="https://images.pexels.com/photos/842811/pexels-photo-842811.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Homem elegante" class="w-full h-full object-cover opacity-60 object-top" referrerpolicy="no-referrer" crossorigin="anonymous">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+                <span class="text-white text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-3">Coleção 2026</span>
+                <h2 class="text-3xl md:text-6xl text-white font-extrabold tracking-tighter drop-shadow-md">Smart Casual<br>Essentials</h2>
+                <p class="text-gray-200 mt-4 text-sm font-medium hidden md:block">O guarda-roupa inteligente para o homem moderno.</p>
+                <a href="#vitrine" class="mt-6 bg-white text-brand-black px-8 py-3 text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-gray-200 transition-colors shadow-lg">Ver Catálogo</a>
+            </div>
+        </section>
+
+        <!-- FILTRO DE CATEGORIAS -->
+        <section class="bg-white border-b border-gray-200 sticky top-[64px] md:top-[80px] z-30">
+            <div class="max-w-7xl mx-auto px-4 overflow-x-auto hide-scrollbar">
+                <div class="flex md:justify-center gap-6 md:gap-10 py-3 md:py-4 min-w-max" id="category-filters">
+                    <button class="filter-btn active text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Todas', this)">Todas as Peças</button>
+                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Roupas', this)">Roupas</button>
+                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Calçados', this)">Calçados</button>
+                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Acessórios', this)">Acessórios</button>
+                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Grooming', this)">Grooming</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VITRINE (GRID) -->
+        <section id="vitrine" class="py-12 md:py-20 px-4 max-w-7xl mx-auto min-h-[50vh]">
+            <div class="flex justify-between items-end mb-8 md:mb-12">
+                <div>
+                    <h3 class="text-2xl md:text-3xl text-brand-black font-extrabold tracking-tight" id="vitrine-title">Catálogo Completo</h3>
+                    <p class="text-xs text-gray-500 mt-1 font-semibold uppercase tracking-widest" id="vitrine-count">Carregando...</p>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12">
+                <!-- Injetado via JS -->
+            </div>
+            
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+                <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-4"></i>
+                <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Nenhum produto encontrado.</p>
+            </div>
+        </section>
+
+        <!-- PROPOSTA DE VALOR (SOBRE) -->
+        <section id="sobre" class="bg-brand-black text-white py-16 md:py-24 px-4">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center p-4">
+                    <i class="fa-solid fa-tag text-3xl mb-4 text-gray-400"></i>
+                    <h4 class="text-lg font-bold mb-2">Preço Justo</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Venda direta ao consumidor final. Sem intermediários, sem markups absurdos. Qualidade premium acessível.</p>
+                </div>
+                <div class="flex flex-col items-center p-4">
+                    <i class="fa-solid fa-gem text-3xl mb-4 text-gray-400"></i>
+                    <h4 class="text-lg font-bold mb-2">Tecidos Tecnológicos</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Trabalhamos com Algodão Pima, Modal e Lã Fria. Peças que não desbotam, não amassam fácil e duram anos.</p>
+                </div>
+                <div class="flex flex-col items-center p-4">
+                    <i class="fa-solid fa-box-open text-3xl mb-4 text-gray-400"></i>
+                    <h4 class="text-lg font-bold mb-2">Primeira Troca Grátis</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Comprou e o tamanho não ficou ideal? A primeira logística reversa é por nossa conta, sem burocracia.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-200 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-10 mb-10">
+            <div class="md:w-1/3">
+                <h2 class="text-xl font-extrabold tracking-tighter uppercase mb-4 text-brand-black">The Concept</h2>
+                <p class="text-xs text-gray-500 font-medium leading-relaxed mb-6">Redefinindo o básico masculino. Curadoria de essenciais para homens que buscam praticidade sem abrir mão da elegância.</p>
+                <div class="flex gap-4 text-xl text-gray-400">
+                    <a href="#" class="hover:text-brand-black transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-brand-black transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+            
+            <div class="flex gap-16">
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-widest mb-4">Loja</h4>
+                    <ul class="flex flex-col gap-3 text-sm text-gray-600 font-medium">
+                        <li><a href="#vitrine" class="hover:text-brand-black">Todos os Produtos</a></li>
+                        <li><a href="#" class="hover:text-brand-black">Camisetas Pima</a></li>
+                        <li><a href="#" class="hover:text-brand-black">Alfaiataria</a></li>
+                        <li><a href="#" class="hover:text-brand-black">Tênis Casuais</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-widest mb-4">Ajuda</h4>
+                    <ul class="flex flex-col gap-3 text-sm text-gray-600 font-medium">
+                        <li><a href="#" class="hover:text-brand-black">Dúvidas Frequentes</a></li>
+                        <li><a href="#" class="hover:text-brand-black">Trocas e Devoluções</a></li>
+                        <li><a href="#" class="hover:text-brand-black">Rastreio de Pedido</a></li>
+                        <li><a href="https://wa.me/5511999999999" class="hover:text-brand-black">Contato WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center md:text-left">
+                &copy; 2026 THE CONCEPT ESSENTIALS. CNPJ: 00.000.000/0001-00.
+            </p>
+            <div class="flex items-center gap-3 text-2xl text-gray-300">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-pix"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT (Aprovada e Estável) -->
+    <script>
+        const WHATSAPP_NUM = '5511999999999';
+        const FRETE_GRATIS_MIN = 299.00;
+
+        /* 
+         * BANCO DE DADOS (Imagens blindadas via Pexels CDN)
+         * Preços realistas para o mercado brasileiro de marcas D2C.
+         */
+        const produtos = [
+            { id: 'p_01', marca: 'Concept', nome: 'Camiseta Pima Essential Branca', macro: 'Roupas', preco: 89.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_02', marca: 'Concept', nome: 'Blazer Slim Fit Estruturado', macro: 'Roupas', preco: 349.90, tamanhos: ['46', '48', '50', '52'], img: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_03', marca: 'Denim', nome: 'Tênis sneaker básico', macro: 'Roupas', preco: 179.90, tamanhos: ['38', '40', '42', '44', '46'], img: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_04', marca: 'Stride', nome: 'Sneaker Runner Casual Branco', macro: 'Calçados', preco: 289.90, tamanhos: ['39', '40', '41', '42', '43'], img: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_05', marca: 'Tempus', nome: 'Relógio Cronógrafo Minimal', macro: 'Acessórios', preco: 329.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_06', marca: 'Grooming', nome: 'Eau de Parfum Wood & Pepper', macro: 'Grooming', preco: 219.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/1961557/pexels-photo-1961557.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_07', marca: 'Optics', nome: 'Óculos de Sol Aviador Gold', macro: 'Acessórios', preco: 149.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/701877/pexels-photo-701877.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_08', marca: 'Firenze', nome: 'Mocassim Loafer Suede Café', macro: 'Calçados', preco: 229.90, tamanhos: ['39', '40', '41', '42'], img: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_09', marca: 'Rebel', nome: 'Jaqueta Biker Couro PU Premium', macro: 'Roupas', preco: 359.90, tamanhos: ['M', 'G', 'GG'], img: 'https://images.pexels.com/photos/1617003/pexels-photo-1617003.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_10', marca: 'Heritage', nome: 'Camisa Manga Longa Oxford', macro: 'Roupas', preco: 139.90, tamanhos: ['2', '3', '4', '5'], img: 'https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_11', marca: 'Concept', nome: 'Suéter Tricot Algodão Leve', macro: 'Roupas', preco: 159.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.pexels.com/photos/45982/pexels-photo-45982.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_12', marca: 'Voyager', nome: 'Mochila Executiva Lona Resistente', macro: 'Acessórios', preco: 199.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/3731256/pexels-photo-3731256.jpeg?auto=compress&cs=tinysrgb&w=600' }
+        ];
+
+        /* ESTADO E CACHE */
+        let carrinho = [];
+        try { carrinho = JSON.parse(localStorage.getItem('@Concept:cart2')) || []; } catch(e) { carrinho = []; }
+        let qvSelectedSize = null;
+
+        const formatMoney = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const saveCart = () => localStorage.setItem('@Concept:cart2', JSON.stringify(carrinho));
+
+        /* RENDERIZAÇÃO DA VITRINE */
+        const renderGrid = (filtro = 'Todas') => {
+            const grid = document.getElementById('product-grid');
+            const empty = document.getElementById('empty-state');
+            const count = document.getElementById('vitrine-count');
+            
+            let lista = filtro === 'Todas' ? produtos : produtos.filter(p => p.macro === filtro);
+            
+            document.getElementById('vitrine-title').innerText = filtro === 'Todas' ? 'Catálogo Completo' : filtro;
+            count.innerText = `${lista.length} Peças`;
+
+            if(lista.length === 0) {
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                empty.classList.add('flex');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            empty.classList.add('hidden');
+            empty.classList.remove('flex');
+
+            grid.innerHTML = lista.map((p, i) => `
+                <article class="product-card cursor-pointer fade-in group" style="animation-delay: ${i * 0.05}s" onclick="openQuickView('${p.id}')">
+                    <div class="aspect-[4/5] bg-gray-100 rounded mb-3 overflow-hidden relative">
+                        <img src="${p.img}" alt="${p.nome}" loading="lazy" class="product-img w-full h-full object-cover" referrerpolicy="no-referrer" crossorigin="anonymous">
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="bg-white text-black text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-sm shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all">Ver Detalhes</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col text-left px-1">
+                        <span class="text-[9px] font-extrabold uppercase tracking-widest text-gray-400 mb-1">${p.marca}</span>
+                        <h3 class="text-xs md:text-sm font-bold text-brand-dark leading-tight line-clamp-2 min-h-[2.2rem]">${p.nome}</h3>
+                        <p class="text-sm md:text-base font-extrabold text-brand-black mt-1">${formatMoney(p.preco)}</p>
+                    </div>
+                </article>
+            `).join('');
+        };
+
+        window.filterCategory = (macro, btn) => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGrid(macro);
+        };
+
+        /* MODAL QUICK VIEW */
+        window.openQuickView = (id) => {
+            const prod = produtos.find(p => p.id === id);
+            if(!prod) return;
+
+            qvSelectedSize = null;
+            document.getElementById('qv-img').src = prod.img;
+            document.getElementById('qv-brand').innerText = prod.marca;
+            document.getElementById('qv-title').innerText = prod.nome;
+            document.getElementById('qv-price').innerText = formatMoney(prod.preco);
+            document.getElementById('qv-installments').innerText = `6x de R$ ${(prod.preco/6).toFixed(2).replace('.',',')} s/ juros`;
+            document.getElementById('qv-id').value = prod.id;
+
+            const sizesDiv = document.getElementById('qv-sizes');
+            
+            if(prod.tamanhos.length === 1 && prod.tamanhos[0] === 'UN') {
+                sizesDiv.innerHTML = `<button class="size-btn bg-brand-black text-white w-auto px-5 h-9 text-xs font-bold border border-brand-black rounded cursor-default">Tam. Único</button>`;
+                qvSelectedSize = 'UN'; 
+            } else {
+                sizesDiv.innerHTML = prod.tamanhos.map(t => `
+                    <button class="size-btn w-9 h-9 border border-gray-300 rounded text-xs font-bold text-gray-700 hover:border-black focus:outline-none transition-colors" onclick="selectSize('${t}', this)">${t}</button>
+                `).join('');
+            }
+
+            document.getElementById('overlay-quickview').classList.add('overlay-active');
+            document.getElementById('quickview-modal').classList.add('quickview-active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.selectSize = (size, btn) => {
+            qvSelectedSize = size;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected', 'bg-brand-black', 'text-white', 'border-brand-black'));
+            btn.classList.add('selected', 'bg-brand-black', 'text-white', 'border-brand-black');
+        };
+
+        window.confirmAddToCart = () => {
+            if(!qvSelectedSize) {
+                showToast('Selecione um tamanho.', 'error'); return;
+            }
+            const id = document.getElementById('qv-id').value;
+            const prod = produtos.find(p => p.id === id);
+            const cartId = `${id}_${qvSelectedSize}`;
+            
+            const idx = carrinho.findIndex(i => i.cartId === cartId);
+            if(idx > -1) carrinho[idx].qty += 1;
+            else carrinho.push({ cartId, id: prod.id, marca: prod.marca, nome: prod.nome, preco: prod.preco, tam: qvSelectedSize, img: prod.img, qty: 1 });
+
+            saveCart();
+            renderCart();
+            
+            document.getElementById('quickview-modal').classList.remove('quickview-active');
+            document.getElementById('overlay-quickview').classList.remove('overlay-active');
+            
+            setTimeout(() => {
+                document.getElementById('overlay-cart').classList.add('overlay-active');
+                document.getElementById('cart-drawer').classList.add('offcanvas-open');
+                showToast(`${prod.nome} na sacola!`);
+            }, 300);
+        };
+
+        /* LÓGICA CARRINHO E FRETE GRÁTIS */
+        const renderCart = () => {
+            const container = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const btnCheck = document.getElementById('btn-checkout');
+            const freeShipMsg = document.getElementById('free-shipping-msg');
+            const freeShipBar = document.getElementById('free-shipping-bar');
+            
+            const totalItens = carrinho.reduce((acc, i) => acc + i.qty, 0);
+            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+            
+            badge.innerText = totalItens;
+
+            if(carrinho.length === 0) {
+                container.innerHTML = `<div class="py-10 text-center text-gray-300 flex flex-col items-center"><i class="fa-solid fa-box-open text-3xl mb-3"></i><p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Sacola vazia</p></div>`;
+                btnCheck.disabled = true;
+                document.getElementById('cart-subtotal').innerText = 'R$ 0,00';
+                document.getElementById('cart-total').innerText = 'R$ 0,00';
+                freeShipMsg.innerHTML = `Faltam <strong class="font-bold">${formatMoney(FRETE_GRATIS_MIN)}</strong> para Frete Grátis`;
+                freeShipBar.style.width = '0%';
+                return;
+            }
+
+            btnCheck.disabled = false;
+            container.innerHTML = carrinho.map(c => `
+                <div class="flex gap-3 bg-white p-2.5 border border-gray-100 rounded shadow-sm relative">
+                    <img src="${c.img}" class="w-16 h-20 object-cover bg-gray-100 shrink-0 rounded-sm" referrerpolicy="no-referrer">
+                    <div class="flex flex-col flex-1 py-1 pr-5">
+                        <h4 class="text-[11px] font-bold text-brand-dark leading-tight">${c.nome}</h4>
+                        <p class="text-[10px] font-bold text-gray-400 mt-0.5">Tam: <span class="text-brand-black">${c.tam}</span></p>
+                        
+                        <div class="flex justify-between items-end mt-auto">
+                            <span class="font-extrabold text-xs text-brand-black">${formatMoney(c.preco)}</span>
+                            <div class="flex items-center border border-gray-200 rounded overflow-hidden">
+                                <button onclick="changeQty('${c.cartId}', -1)" class="w-6 h-6 bg-gray-50 hover:bg-gray-200 text-gray-700 flex items-center justify-center"><i class="fa-solid fa-minus text-[8px]"></i></button>
+                                <span class="w-6 text-[10px] font-bold text-center border-x border-gray-200 flex items-center justify-center">${c.qty}</span>
+                                <button onclick="changeQty('${c.cartId}', 1)" class="w-6 h-6 bg-gray-50 hover:bg-gray-200 text-gray-700 flex items-center justify-center"><i class="fa-solid fa-plus text-[8px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeCart('${c.cartId}')" class="absolute top-2 right-2 text-gray-300 hover:text-red-500"><i class="fa-solid fa-xmark text-sm"></i></button>
+                </div>
+            `).join('');
+
+            // Progresso Frete
+            const prog = Math.min((subtotal / FRETE_GRATIS_MIN) * 100, 100);
+            freeShipBar.style.width = `${prog}%`;
+            
+            if(subtotal >= FRETE_GRATIS_MIN) {
+                freeShipMsg.innerHTML = `<span class="text-[#25D366] font-bold uppercase tracking-wide text-[10px]"><i class="fa-solid fa-truck-fast"></i> Parabéns! Frete Grátis Liberado</span>`;
+                freeShipBar.classList.replace('bg-brand-black', 'bg-[#25D366]');
+            } else {
+                freeShipMsg.innerHTML = `Faltam <strong class="font-bold">${formatMoney(FRETE_GRATIS_MIN - subtotal)}</strong> para Frete Grátis`;
+                freeShipBar.classList.replace('bg-[#25D366]', 'bg-brand-black');
+            }
+
+            calcTotal(subtotal);
+        };
+
+        window.changeQty = (cid, diff) => {
+            let item = carrinho.find(c => c.cartId === cid);
+            if(item) {
+                item.qty += diff;
+                if(item.qty <= 0) carrinho = carrinho.filter(c => c.cartId !== cid);
+                saveCart(); renderCart();
+            }
+        };
+
+        window.removeCart = (cid) => {
+            carrinho = carrinho.filter(c => c.cartId !== cid);
+            saveCart(); renderCart();
+        };
+
+        window.calcTotal = (sub = null) => {
+            if(sub === null) sub = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+            
+            let frete = 0;
+            if(sub > 0 && sub < FRETE_GRATIS_MIN) {
+                const f = document.querySelector('input[name="frete"]:checked');
+                if(f) frete = parseFloat(f.value);
+            }
+            
+            document.getElementById('cart-subtotal').innerText = formatMoney(sub);
+            document.getElementById('cart-total').innerText = formatMoney(sub + frete);
+        };
+
+        /* CHECKOUT WHATSAPP */
+        window.checkoutWhatsApp = () => {
+            if(carrinho.length === 0) return;
+
+            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+            let freteValor = 0;
+            let modoEntrega = "Retirada na Loja";
+            
+            const freteInput = document.querySelector('input[name="frete"]:checked');
+            if(freteInput.value !== "0") {
+                modoEntrega = "Correios / Transportadora";
+                if(subtotal < FRETE_GRATIS_MIN) freteValor = parseFloat(freteInput.value);
+                else modoEntrega += " (Frete Grátis Aplicado)";
+            }
+            
+            const total = subtotal + freteValor;
+
+            let msg = `*THE CONCEPT - NOVO PEDIDO* 📦\n\n`;
+            carrinho.forEach((c, i) => {
+                msg += `*${i+1}.* ${c.nome}\n   Tam: ${c.tam} | Qtd: ${c.qty} | Sub: ${formatMoney(c.preco * c.qty)}\n\n`;
+            });
+
+            msg += `━━━━━━━━━━━━━━\n`;
+            msg += `*Entrega:* ${modoEntrega}\n`;
+            msg += `*Subtotal:* ${formatMoney(subtotal)}\n`;
+            if(freteValor > 0) msg += `*Frete:* ${formatMoney(freteValor)}\n`;
+            msg += `*TOTAL:* ${formatMoney(total)}\n`;
+            msg += `━━━━━━━━━━━━━━\n\n`;
+            msg += `Olá! Meu pedido está pronto. Qual o link ou chave PIX para pagamento?`;
+
+            const btn = document.getElementById('btn-checkout');
+            const bkp = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Abrindo WhatsApp...`;
+            
+            setTimeout(() => {
+                window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
+                btn.innerHTML = bkp;
+                closeModals();
+            }, 800);
+        };
+
+        /* CONTROLES GERAIS E EVENTOS */
+        window.closeModals = () => {
+            document.querySelectorAll('.overlay').forEach(o => o.classList.remove('overlay-active'));
+            document.querySelectorAll('.offcanvas').forEach(o => o.classList.remove('offcanvas-open'));
+            document.getElementById('quickview-modal').classList.remove('quickview-active');
+            document.body.style.overflow = '';
+        };
+
+        window.showToast = (msg, type='success') => {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<i class="fa-solid ${type==='success'?'fa-circle-check text-[#25D366]':'fa-circle-exclamation text-red-500'} text-lg"></i> <div class="flex flex-col"><span class="text-[10px] font-bold uppercase tracking-widest text-brand-dark">${type==='success'?'Sucesso':'Atenção'}</span><span class="text-xs text-gray-500 font-medium">${msg}</span></div>`;
+            c.appendChild(t);
+            setTimeout(() => t.classList.add('show'), 50);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(()=>t.remove(),400); }, 3000);
+        };
+
+        document.getElementById('btn-menu').addEventListener('click', () => {
+            document.getElementById('overlay-menu').classList.add('overlay-active');
+            document.getElementById('mobile-menu').classList.add('offcanvas-open');
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('btn-cart').addEventListener('click', () => {
+            document.getElementById('overlay-cart').classList.add('overlay-active');
+            document.getElementById('cart-drawer').classList.add('offcanvas-open');
+            document.body.style.overflow = 'hidden';
+        });
+
+        window.addEventListener('scroll', () => {
+            const h = document.getElementById('header');
+            if(window.scrollY > 10) h.classList.add('shadow-sm');
+            else h.classList.remove('shadow-sm');
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            renderCart();
+        });
+    </script>
+</body>
+</html>

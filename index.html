@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE CONCEPT | Smart Casual & Essenciais</title>
-    <meta name="description" content="Moda masculina inteligente, versátil e com preço justo.">
+    <meta name="description" content="A seleção definitiva da moda masculina contemporânea. Curadoria global de marcas premium.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome via CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Configuração Tailwind -->
@@ -22,152 +22,170 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    },
                     colors: {
                         brand: {
-                            black: '#111111',
-                            dark: '#222222',
-                            gray: '#f9f9f9',
-                            accent: '#4B5563', 
+                            black: '#050505',
+                            dark: '#121212',
+                            gray: '#f5f5f5',
+                            accent: '#52525b', 
                             light: '#ffffff'
                         },
                         whatsapp: '#25D366'
                     },
                     boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)',
-                        'modal': '0 20px 40px -10px rgba(0,0,0,0.2)',
+                        'premium': '0 10px 30px -5px rgba(0,0,0,0.08)',
+                        'modal': '0 25px 50px -12px rgba(0,0,0,0.25)',
                     }
                 }
             }
         }
     </script>
 
+    <!-- CSS Customizado & Animações -->
     <style>
-        /* Base e Reset */
+        /* Base Suave */
         html { scroll-behavior: smooth; }
-        body { -webkit-font-smoothing: antialiased; background-color: #f9f9f9; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background-color: #fafafa; }
 
         /* Scrollbars Customizadas */
         ::-webkit-scrollbar { width: 6px; height: 4px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Animações e Transições */
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* UI Animations */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .product-img { transition: transform 0.6s ease; }
-        .product-card:hover .product-img { transform: scale(1.05); }
+        /* Marquee Animation (Faixa de Marcas) */
+        .marquee-container {
+            overflow: hidden; white-space: nowrap; position: relative;
+            background-color: #050505; color: #fff; padding: 12px 0;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        .marquee-container:hover .marquee-content { animation-play-state: paused; }
+        @keyframes marquee { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-50%); } 
+        }
 
-        /* Componentes Funcionais */
-        .size-btn { transition: all 0.2s; }
-        .size-btn.selected { background-color: #111111; color: #fff; border-color: #111111; }
+        /* Efeitos Vitrine */
+        .product-card { transition: all 0.4s ease; }
+        .product-img { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .product-card:hover .product-img { transform: scale(1.08); }
         
-        .offcanvas { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .size-btn { transition: all 0.2s ease; }
+        .size-btn.selected { background-color: #050505; color: #fff; border-color: #050505; }
+
+        /* Modais & Offcanvas */
+        .offcanvas { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .offcanvas-open { transform: translateX(0) !important; }
         
-        .overlay { transition: opacity 0.3s; opacity: 0; pointer-events: none; }
+        .overlay { transition: opacity 0.3s ease; opacity: 0; pointer-events: none; }
         .overlay-active { opacity: 1; pointer-events: auto; }
 
-        #quickview-modal { transition: opacity 0.3s, transform 0.3s; }
+        /* Quick View Modal */
+        #quickview-modal { transition: opacity 0.3s ease, transform 0.3s ease; }
         .quickview-active { opacity: 1 !important; transform: translate(-50%, -50%) scale(1) !important; pointer-events: auto !important; }
 
-        /* Toast Notifications */
+        /* Toasts */
         .toast {
-            background: #fff; border-left: 4px solid #111; padding: 12px 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08); border-radius: 4px;
+            background: #fff; border-left: 3px solid #050505; padding: 16px 24px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border-radius: 2px;
             display: flex; align-items: center; gap: 12px;
-            transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(120%); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         .toast.show { transform: translateX(0); opacity: 1; }
-        .toast.error { border-left-color: #ef4444; }
-        .toast.success { border-left-color: #25D366; }
         
-        /* Filtro Ativo */
-        .filter-btn.active { color: #111; font-weight: 700; border-bottom: 2px solid #111; }
+        /* Filtros Ativos */
+        .filter-btn.active { color: #050505; font-weight: 700; border-bottom: 2px solid #050505; }
     </style>
 </head>
-<body class="text-brand-dark flex flex-col min-h-screen">
+<body class="text-brand-dark flex flex-col min-h-screen overflow-x-hidden">
 
     <!-- TOAST CONTAINER -->
-    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-6 right-4 md:right-8 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- TOP BAR -->
-    <div class="bg-brand-black text-white text-[10px] md:text-xs text-center py-2 font-medium tracking-wide">
-        Frete Grátis nas compras acima de R$ 299,00
+    <div class="bg-brand-black text-brand-light text-[9px] md:text-xs text-center py-2.5 font-medium tracking-[0.2em] uppercase">
+        Curadoria Global • Frete grátis em pedidos acima de R$ 299
     </div>
 
     <!-- HEADER -->
-    <header id="header" class="bg-white sticky top-0 z-40 border-b border-gray-100 transition-shadow duration-300">
+    <header id="header" class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 transition-shadow duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 md:h-20">
+            <div class="flex items-center justify-between h-16 md:h-24">
                 
                 <!-- Menu Mobile -->
                 <div class="flex-1 md:hidden">
-                    <button id="btn-menu" class="text-xl text-brand-dark focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+                    <button id="btn-menu" class="text-xl text-brand-dark focus:outline-none" aria-label="Menu">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
                 </div>
 
                 <!-- Desktop Nav -->
-                <nav class="hidden md:flex flex-1 gap-6 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <a href="#vitrine" class="hover:text-brand-black transition-colors">Novidades</a>
-                    <a href="#vitrine" class="hover:text-brand-black transition-colors">Mais Vendidos</a>
-                    <a href="#sobre" class="hover:text-brand-black transition-colors">Nossa Proposta</a>
+                <nav class="hidden md:flex flex-1 gap-8 text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+                    <a href="#vitrine" class="hover:text-brand-black transition-colors">Catálogo</a>
+                    <a href="#depoimentos" class="hover:text-brand-black transition-colors">A Marca</a>
                 </nav>
 
-                <!-- Logo -->
+                <!-- Logo Central -->
                 <div class="flex-shrink-0 cursor-pointer text-center" onclick="window.scrollTo(0,0)">
-                    <h1 class="font-extrabold text-2xl md:text-3xl tracking-tighter text-brand-black uppercase">
-                        THE CONCEPT
+                    <h1 class="font-serif text-2xl md:text-4xl font-bold tracking-[0.1em] md:tracking-[0.2em] text-brand-black uppercase">
+                        The Concept
                     </h1>
                 </div>
 
                 <!-- Ícones Direita -->
-                <div class="flex-1 flex items-center justify-end gap-5 text-lg md:text-xl text-brand-dark">
-                    <button class="hover:text-gray-500 transition-colors" aria-label="Busca"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button id="btn-cart" class="relative hover:text-gray-500 transition-colors group" aria-label="Carrinho">
+                <div class="flex-1 flex items-center justify-end gap-5 md:gap-8 text-lg md:text-xl text-brand-dark">
+                    <button class="hover:text-brand-accent transition-transform hover:scale-110 focus:outline-none"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="hidden md:block hover:text-brand-accent transition-transform hover:scale-110 focus:outline-none"><i class="fa-regular fa-user"></i></button>
+                    <button id="btn-cart" class="relative hover:text-brand-accent transition-transform hover:scale-110 focus:outline-none group">
                         <i class="fa-solid fa-bag-shopping"></i>
-                        <span id="cart-badge" class="absolute -top-1.5 -right-2 bg-brand-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-2 bg-brand-black text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow">0</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- OFFCANVAS: MENU MOBILE -->
-    <div id="overlay-menu" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 overlay" onclick="closeModals()"></div>
-    <aside id="mobile-menu" class="fixed top-0 left-0 h-full w-[80%] max-w-[300px] bg-white z-50 transform -translate-x-full offcanvas flex flex-col shadow-2xl">
-        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-            <h2 class="font-extrabold text-lg tracking-tight uppercase">Menu</h2>
-            <button onclick="closeModals()" class="text-xl text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+    <!-- OFFCANVAS E MODAIS -->
+    <div id="overlay-global" class="fixed inset-0 bg-brand-black/60 backdrop-blur-sm z-40 overlay" onclick="closeModals()"></div>
+    
+    <!-- Menu Mobile -->
+    <aside id="mobile-menu" class="fixed top-0 left-0 h-full w-[85%] max-w-[320px] bg-white z-50 transform -translate-x-full offcanvas flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <h2 class="font-serif text-lg font-bold tracking-[0.2em] uppercase">Menu</h2>
+            <button onclick="closeModals()" class="text-2xl text-gray-400 hover:text-brand-black"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="flex-1 overflow-y-auto py-4">
-            <ul class="flex flex-col text-sm font-bold uppercase tracking-wider text-brand-dark">
-                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Roupas', document.querySelectorAll('.filter-btn')[1])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Roupas Clássicas</a></li>
-                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Calçados', document.querySelectorAll('.filter-btn')[2])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Calçados & Tênis</a></li>
-                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Acessórios', document.querySelectorAll('.filter-btn')[3])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Acessórios</a></li>
-                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Grooming', document.querySelectorAll('.filter-btn')[4])" class="block py-4 px-6 hover:bg-gray-50 border-b border-gray-100">Perfumaria</a></li>
+        <div class="flex-1 overflow-y-auto py-2">
+            <ul class="flex flex-col text-sm font-semibold uppercase tracking-wider text-brand-dark">
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Roupas', document.querySelectorAll('.filter-btn')[1])" class="block py-4 px-6 border-b border-gray-50 hover:bg-gray-50">Roupas</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Calçados', document.querySelectorAll('.filter-btn')[2])" class="block py-4 px-6 border-b border-gray-50 hover:bg-gray-50">Calçados</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Acessórios', document.querySelectorAll('.filter-btn')[3])" class="block py-4 px-6 border-b border-gray-50 hover:bg-gray-50">Acessórios</a></li>
+                <li><a href="#vitrine" onclick="closeModals(); filterCategory('Grooming', document.querySelectorAll('.filter-btn')[4])" class="block py-4 px-6 border-b border-gray-50 hover:bg-gray-50">Perfumaria</a></li>
             </ul>
-        </div>
-        <div class="p-6 bg-gray-50">
-            <a href="https://wa.me/5511999999999" target="_blank" class="flex items-center justify-center gap-2 w-full bg-whatsapp text-white py-3 rounded font-bold uppercase text-xs hover:bg-green-600 transition-colors">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Suporte WhatsApp
-            </a>
         </div>
     </aside>
 
-    <!-- OFFCANVAS: CARRINHO -->
-    <div id="overlay-cart" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 overlay" onclick="closeModals()"></div>
-    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 transform translate-x-full offcanvas flex flex-col shadow-2xl">
-        <div class="flex items-center justify-between p-5 border-b border-gray-100 bg-brand-black text-white">
-            <h3 class="font-bold uppercase tracking-widest text-sm flex items-center gap-2"><i class="fa-solid fa-bag-shopping"></i> Sacola de Compras</h3>
+    <!-- Carrinho Drawer -->
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 transform translate-x-full offcanvas flex flex-col shadow-2xl border-l border-gray-200">
+        <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-brand-black text-white">
+            <h3 class="font-serif text-lg font-bold uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-bag-shopping"></i> Sua Sacola</h3>
             <button onclick="closeModals()" class="text-xl text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <div class="flex-1 overflow-y-auto flex flex-col bg-gray-50 relative">
-            <!-- Barra Frete Grátis Visual -->
+        <div class="flex-1 overflow-y-auto flex flex-col bg-gray-50/50">
+            <!-- Barra de Frete Grátis -->
             <div class="bg-white p-3 border-b border-gray-200 text-center shadow-sm sticky top-0 z-10">
                 <p id="free-shipping-msg" class="text-xs font-medium text-brand-dark mb-2">Faltam <strong class="font-bold">R$ 299,00</strong> para Frete Grátis</p>
                 <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
@@ -175,232 +193,302 @@
                 </div>
             </div>
 
-            <div id="cart-items" class="p-4 flex flex-col gap-3">
+            <div id="cart-items" class="p-5 flex flex-col gap-4">
                 <!-- Injetado via JS -->
             </div>
         </div>
 
-        <div class="border-t border-gray-200 p-5 bg-white shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-            <div class="mb-4">
-                <p class="font-bold text-[10px] uppercase tracking-widest text-gray-500 mb-2">Entrega</p>
-                <div class="flex flex-col gap-2 text-xs font-semibold">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="frete" value="0" class="accent-brand-black" checked onchange="calcTotal()">
-                        <span>Retirar na Loja (Grátis)</span>
+        <div class="border-t border-gray-200 p-6 bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
+            <div class="mb-5">
+                <p class="font-bold text-[10px] uppercase tracking-widest text-gray-400 mb-3">Método de Entrega</p>
+                <div class="flex flex-col gap-3 text-xs font-medium">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="frete" value="0" class="w-3.5 h-3.5 text-brand-black accent-brand-black" checked onchange="calcTotal()">
+                        <span class="group-hover:text-gray-500 transition-colors">Retirar na Loja (Concept Store) - Grátis</span>
                     </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="frete" value="25" class="accent-brand-black" onchange="calcTotal()">
-                        <span>Correios / Transportadora - <strong class="text-brand-black">R$ 25,00</strong></span>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="frete" value="25" class="w-3.5 h-3.5 text-brand-black accent-brand-black" onchange="calcTotal()">
+                        <span class="group-hover:text-gray-500 transition-colors flex-1">Correios / Transportadora</span>
+                        <span class="font-bold text-brand-black">R$ 25,00</span>
                     </label>
                 </div>
             </div>
             
-            <div class="flex justify-between items-center mb-1 text-xs text-gray-500 font-medium">
+            <div class="flex justify-between items-center mb-2 text-xs text-gray-500 uppercase tracking-widest">
                 <span>Subtotal</span><span id="cart-subtotal" class="font-bold text-brand-dark">R$ 0,00</span>
             </div>
-            <div class="flex justify-between items-end mb-5">
-                <span class="text-lg font-extrabold uppercase">Total</span>
-                <span id="cart-total" class="text-xl font-extrabold text-brand-black">R$ 0,00</span>
+            <div class="flex justify-between items-end mb-6">
+                <span class="font-serif text-xl font-bold uppercase">Total</span>
+                <span id="cart-total" class="text-2xl font-bold text-brand-black tracking-tight">R$ 0,00</span>
             </div>
 
-            <button id="btn-checkout" onclick="checkoutWhatsApp()" class="w-full bg-brand-black text-white font-bold py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Fechar Pedido
+            <button id="btn-checkout" onclick="checkoutWhatsApp()" class="w-full bg-brand-black text-white font-bold py-4 rounded-sm text-xs uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors flex items-center justify-center gap-3 shadow-lg disabled:opacity-40">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Finalizar Pedido
             </button>
         </div>
     </aside>
 
-    <!-- MODAL: QUICK VIEW (Responsivo e Seguro) -->
-    <div id="overlay-quickview" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] overlay" onclick="closeModals()"></div>
-    <div id="quickview-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white z-[70] w-[92%] sm:w-[75%] max-w-[800px] max-h-[85vh] flex flex-col md:flex-row rounded overflow-hidden shadow-modal opacity-0 pointer-events-none scale-95">
+    <!-- Modal Quick View -->
+    <div id="quickview-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white z-[70] w-[92%] sm:w-[85%] max-w-[900px] max-h-[90vh] flex flex-col md:flex-row rounded-sm overflow-hidden shadow-modal opacity-0 pointer-events-none scale-95">
         
-        <button onclick="closeModals()" class="absolute top-3 right-3 z-[80] text-gray-600 bg-white/90 backdrop-blur rounded-full w-8 h-8 flex items-center justify-center hover:bg-black hover:text-white shadow">
+        <button onclick="closeModals()" class="absolute top-4 right-4 z-[80] text-gray-500 bg-white/90 backdrop-blur rounded-full w-8 h-8 flex items-center justify-center hover:bg-brand-black hover:text-white transition-colors shadow">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
-        <!-- Esquerda: Imagem Responsiva -->
-        <div class="w-full md:w-1/2 bg-gray-100 h-64 md:h-auto relative shrink-0">
-            <!-- referrerpolicy="no-referrer" garante que a imagem carregue mesmo em iframes/codepen -->
-            <img id="qv-img" src="" alt="Produto" class="absolute inset-0 w-full h-full object-cover" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <div class="w-full md:w-1/2 bg-gray-100 aspect-square md:aspect-auto md:h-auto relative shrink-0">
+            <!-- As imagens aqui usam no-referrer para não quebrarem -->
+            <img id="qv-img" src="" alt="Produto" class="absolute inset-0 w-full h-full object-cover" referrerpolicy="no-referrer">
         </div>
         
-        <!-- Direita: Informações (Scroll interno apenas aqui no mobile) -->
-        <div class="w-full md:w-1/2 flex flex-col overflow-y-auto bg-white p-5 md:p-8">
-            <div class="mb-4">
-                <span id="qv-brand" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">MARCA</span>
-                <h2 id="qv-title" class="text-xl md:text-2xl font-extrabold text-brand-black leading-tight mt-1 mb-2">Nome do Produto</h2>
-                <div class="flex items-end gap-2">
-                    <p id="qv-price" class="text-xl font-bold text-brand-black">R$ 0,00</p>
-                    <p id="qv-installments" class="text-xs text-gray-500 font-medium mb-1">6x sem juros</p>
+        <div class="w-full md:w-1/2 flex flex-col overflow-y-auto bg-white p-6 md:p-10">
+            <div class="mb-5">
+                <span id="qv-brand" class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">MARCA</span>
+                <h2 id="qv-title" class="font-serif text-2xl md:text-3xl font-bold text-brand-black leading-tight mt-2 mb-3">Nome do Produto</h2>
+                <div class="flex items-end gap-3 border-b border-gray-100 pb-5">
+                    <p id="qv-price" class="text-2xl font-bold text-brand-black">R$ 0,00</p>
+                    <p id="qv-installments" class="text-xs text-gray-500 font-medium mb-1.5">6x sem juros</p>
                 </div>
             </div>
             
-            <p id="qv-desc" class="text-sm text-gray-600 leading-relaxed mb-6 hidden md:block">Modelagem inteligente desenvolvida para garantir o caimento perfeito. Peça essencial para um guarda-roupa versátil e autêntico.</p>
+            <p id="qv-desc" class="text-sm text-gray-600 leading-relaxed font-light mb-8">Confeccionado com os materiais mais nobres do mercado, oferecendo um caimento impecável e durabilidade para acompanhar a rotina do homem moderno. Uma verdadeira peça de investimento.</p>
             
-            <div class="mt-auto pt-4 border-t border-gray-100">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wide text-brand-dark">Tamanho</span>
+            <div class="mt-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.15em] text-brand-dark">Tamanho Desejado</span>
                 </div>
                 
-                <div id="qv-sizes" class="flex flex-wrap gap-2 mb-6">
+                <div id="qv-sizes" class="flex flex-wrap gap-2.5 mb-8">
                     <!-- Botões gerados via JS -->
                 </div>
                 
                 <input type="hidden" id="qv-id" value="">
                 
-                <button onclick="confirmAddToCart()" class="w-full bg-brand-black text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded hover:bg-gray-800 transition-colors flex justify-center items-center gap-2">
+                <button onclick="confirmAddToCart()" class="w-full bg-brand-black text-white font-bold text-xs uppercase tracking-[0.2em] py-4 rounded-sm hover:bg-gray-800 transition-colors flex justify-center items-center gap-2 shadow-md">
                     Adicionar à Sacola
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
+
+    <!-- ==========================================
+         MAIN CONTENT
+         ========================================== -->
     <main class="flex-grow">
         
-        <!-- HERO BANNER (Pexels - Altamente Confiável) -->
-        <section class="relative w-full h-[45vh] md:h-[65vh] bg-brand-dark overflow-hidden">
-            <img src="https://images.pexels.com/photos/842811/pexels-photo-842811.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Homem elegante" class="w-full h-full object-cover opacity-60 object-top" referrerpolicy="no-referrer" crossorigin="anonymous">
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                <span class="text-white text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-3">Coleção 2026</span>
-                <h2 class="text-3xl md:text-6xl text-white font-extrabold tracking-tighter drop-shadow-md">Smart Casual<br>Essentials</h2>
-                <p class="text-gray-200 mt-4 text-sm font-medium hidden md:block">O guarda-roupa inteligente para o homem moderno.</p>
-                <a href="#vitrine" class="mt-6 bg-white text-brand-black px-8 py-3 text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-gray-200 transition-colors shadow-lg">Ver Catálogo</a>
+        <!-- HERO BANNER (Imagem Corrigida via Unsplash) -->
+        <section class="relative w-full h-[50vh] md:h-[75vh] bg-brand-dark overflow-hidden flex items-center justify-center">
+            <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Loja Multimarcas" class="absolute inset-0 w-full h-full object-cover opacity-50" referrerpolicy="no-referrer">
+            
+            <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-3xl">
+                <span class="text-white text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-4">Outono / Inverno 2026</span>
+                <h2 class="font-serif text-4xl md:text-7xl text-white font-bold drop-shadow-xl leading-tight mb-6">A Arte da<br>Alfaiataria Moderna</h2>
+                <p class="text-gray-300 text-sm md:text-base font-light mb-8 max-w-lg hidden md:block">Descubra peças exclusivas desenhadas para transitar do escritório aos eventos com precisão impecável.</p>
+                <div class="flex gap-4">
+                    <a href="#vitrine" class="bg-white text-brand-black px-8 py-3.5 text-xs font-bold uppercase tracking-[0.15em] hover:bg-gray-200 transition-colors">Ver Coleção</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARQUEE (FAIXA DE MARCAS - INFINITE SCROLL) -->
+        <section id="marcas" class="marquee-container border-y border-gray-800">
+            <div class="marquee-content text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] opacity-80">
+                HUGO BOSS &nbsp;&nbsp;•&nbsp;&nbsp; VANGUARD &nbsp;&nbsp;•&nbsp;&nbsp; ZEGNA &nbsp;&nbsp;•&nbsp;&nbsp; TOM FORD &nbsp;&nbsp;•&nbsp;&nbsp; SARTORIAL &nbsp;&nbsp;•&nbsp;&nbsp; ARMANI EXCHANGE &nbsp;&nbsp;•&nbsp;&nbsp; THE CONCEPT &nbsp;&nbsp;•&nbsp;&nbsp; 
+                HUGO BOSS &nbsp;&nbsp;•&nbsp;&nbsp; VANGUARD &nbsp;&nbsp;•&nbsp;&nbsp; ZEGNA &nbsp;&nbsp;•&nbsp;&nbsp; TOM FORD &nbsp;&nbsp;•&nbsp;&nbsp; SARTORIAL &nbsp;&nbsp;•&nbsp;&nbsp; ARMANI EXCHANGE &nbsp;&nbsp;•&nbsp;&nbsp; THE CONCEPT &nbsp;&nbsp;•&nbsp;&nbsp;
             </div>
         </section>
 
         <!-- FILTRO DE CATEGORIAS -->
-        <section class="bg-white border-b border-gray-200 sticky top-[64px] md:top-[80px] z-30">
+        <section class="bg-white border-b border-gray-200 sticky top-[64px] md:top-[96px] z-30 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 overflow-x-auto hide-scrollbar">
-                <div class="flex md:justify-center gap-6 md:gap-10 py-3 md:py-4 min-w-max" id="category-filters">
-                    <button class="filter-btn active text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Todas', this)">Todas as Peças</button>
-                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Roupas', this)">Roupas</button>
-                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Calçados', this)">Calçados</button>
-                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Acessórios', this)">Acessórios</button>
-                    <button class="filter-btn text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-brand-black transition-colors py-1" onclick="filterCategory('Grooming', this)">Grooming</button>
+                <div class="flex md:justify-center gap-8 md:gap-12 py-4 min-w-max" id="category-filters">
+                    <button class="filter-btn active text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-brand-black transition-colors py-1 focus:outline-none" onclick="filterCategory('Todas', this)">Visão Geral</button>
+                    <button class="filter-btn text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-brand-black transition-colors py-1 focus:outline-none" onclick="filterCategory('Roupas', this)">Roupas</button>
+                    <button class="filter-btn text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-brand-black transition-colors py-1 focus:outline-none" onclick="filterCategory('Calçados', this)">Calçados</button>
+                    <button class="filter-btn text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-brand-black transition-colors py-1 focus:outline-none" onclick="filterCategory('Acessórios', this)">Acessórios</button>
+                    <button class="filter-btn text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-brand-black transition-colors py-1 focus:outline-none" onclick="filterCategory('Grooming', this)">Grooming</button>
                 </div>
             </div>
         </section>
 
         <!-- VITRINE (GRID) -->
-        <section id="vitrine" class="py-12 md:py-20 px-4 max-w-7xl mx-auto min-h-[50vh]">
-            <div class="flex justify-between items-end mb-8 md:mb-12">
+        <section id="vitrine" class="py-16 md:py-24 px-4 max-w-7xl mx-auto min-h-[50vh]">
+            <div class="flex justify-between items-end mb-10 md:mb-16">
                 <div>
-                    <h3 class="text-2xl md:text-3xl text-brand-black font-extrabold tracking-tight" id="vitrine-title">Catálogo Completo</h3>
-                    <p class="text-xs text-gray-500 mt-1 font-semibold uppercase tracking-widest" id="vitrine-count">Carregando...</p>
+                    <h3 class="font-serif text-3xl md:text-4xl text-brand-black font-bold" id="vitrine-title">Catálogo Completo</h3>
+                    <p class="text-xs text-gray-500 mt-2 uppercase tracking-[0.2em] font-medium" id="vitrine-count">Carregando...</p>
                 </div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12">
-                <!-- Injetado via JS -->
+            <!-- Grid de Produtos Responsivo -->
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
+                <!-- Renderizado via JS -->
             </div>
             
-            <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
-                <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-4"></i>
-                <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Nenhum produto encontrado.</p>
+            <!-- Estado Vazio -->
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center">
+                <i class="fa-solid fa-box-open text-5xl text-gray-200 mb-5"></i>
+                <p class="text-sm font-bold text-gray-500 uppercase tracking-[0.2em]">Acervo indisponível.</p>
             </div>
         </section>
 
-        <!-- PROPOSTA DE VALOR (SOBRE) -->
-        <section id="sobre" class="bg-brand-black text-white py-16 md:py-24 px-4">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="flex flex-col items-center p-4">
-                    <i class="fa-solid fa-tag text-3xl mb-4 text-gray-400"></i>
-                    <h4 class="text-lg font-bold mb-2">Preço Justo</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Venda direta ao consumidor final. Sem intermediários, sem markups absurdos. Qualidade premium acessível.</p>
+        <!-- SOCIAL PROOF / DEPOIMENTOS -->
+        <section id="depoimentos" class="py-20 md:py-28 bg-brand-dark text-white px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-gray-400 text-[10px] font-bold tracking-[0.3em] uppercase block mb-3">Avaliações</span>
+                    <h3 class="font-serif text-3xl md:text-4xl">O que nossos clientes dizem</h3>
                 </div>
-                <div class="flex flex-col items-center p-4">
-                    <i class="fa-solid fa-gem text-3xl mb-4 text-gray-400"></i>
-                    <h4 class="text-lg font-bold mb-2">Tecidos Tecnológicos</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Trabalhamos com Algodão Pima, Modal e Lã Fria. Peças que não desbotam, não amassam fácil e duram anos.</p>
-                </div>
-                <div class="flex flex-col items-center p-4">
-                    <i class="fa-solid fa-box-open text-3xl mb-4 text-gray-400"></i>
-                    <h4 class="text-lg font-bold mb-2">Primeira Troca Grátis</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium">Comprou e o tamanho não ficou ideal? A primeira logística reversa é por nossa conta, sem burocracia.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-[#1a1a1a] p-8 rounded-sm text-center flex flex-col items-center">
+                        <div class="text-brand-light text-sm mb-4 flex gap-1"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 font-light text-sm leading-relaxed mb-6 italic">"A qualidade da alfaiataria é surpreendente. O blazer Sartorial chegou impecável, com o caimento exato."</p>
+                        <span class="text-xs font-bold uppercase tracking-widest block mt-auto">— Ricardo M., São Paulo</span>
+                    </div>
+                    <div class="bg-[#1a1a1a] p-8 rounded-sm text-center flex flex-col items-center">
+                        <div class="text-brand-light text-sm mb-4 flex gap-1"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 font-light text-sm leading-relaxed mb-6 italic">"Primeira vez comprando online uma peça de valor tão alto. A experiência de unboxing superou minhas expectativas."</p>
+                        <span class="text-xs font-bold uppercase tracking-widest block mt-auto">— Leonardo C., Rio de Janeiro</span>
+                    </div>
+                    <div class="bg-[#1a1a1a] p-8 rounded-sm text-center flex flex-col items-center">
+                        <div class="text-brand-light text-sm mb-4 flex gap-1"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 font-light text-sm leading-relaxed mb-6 italic">"Os calçados são extremamente confortáveis. A entrega expresso funcionou muito bem, chegou em 2 dias úteis."</p>
+                        <span class="text-xs font-bold uppercase tracking-widest block mt-auto">— Thiago A., Curitiba</span>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- NEWSLETTER / LEAD CAPTURE -->
+        <section class="py-20 bg-gray-100 px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <i class="fa-regular fa-envelope text-4xl text-gray-300 mb-5"></i>
+                <h3 class="font-serif text-2xl md:text-3xl text-brand-black mb-3">Clube Concept</h3>
+                <p class="text-sm text-gray-500 font-light mb-8 max-w-md mx-auto">Inscreva-se para receber acesso antecipado a novas coleções, private sales e dicas de estilo do nosso concierge.</p>
+                
+                <form class="flex flex-col sm:flex-row max-w-lg mx-auto gap-2" onsubmit="event.preventDefault(); showToast('Inscrição confirmada com sucesso!', 'success'); this.reset();">
+                    <input type="email" placeholder="Seu melhor e-mail" required class="flex-1 px-4 py-3 border border-gray-300 text-sm focus:outline-none focus:border-brand-black bg-white rounded-sm">
+                    <button type="submit" class="bg-brand-black text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors rounded-sm">Assinar</button>
+                </form>
+            </div>
+        </section>
+
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-gray-200 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-10 mb-10">
-            <div class="md:w-1/3">
-                <h2 class="text-xl font-extrabold tracking-tighter uppercase mb-4 text-brand-black">The Concept</h2>
-                <p class="text-xs text-gray-500 font-medium leading-relaxed mb-6">Redefinindo o básico masculino. Curadoria de essenciais para homens que buscam praticidade sem abrir mão da elegância.</p>
-                <div class="flex gap-4 text-xl text-gray-400">
-                    <a href="#" class="hover:text-brand-black transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="hover:text-brand-black transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+    <!-- ==========================================
+         MEGA FOOTER PREMIUM
+         ========================================== -->
+    <footer class="bg-[#050505] text-white pt-20 pb-10 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+            
+            <div class="lg:col-span-1">
+                <h2 class="font-serif text-2xl font-bold tracking-[0.2em] uppercase mb-4 text-white">The Concept</h2>
+                <p class="text-[11px] text-gray-400 font-light leading-relaxed mb-6 max-w-xs">A curadoria definitiva para o homem que valoriza qualidade, design atemporal e sofisticação.</p>
+                <div class="text-[11px] text-gray-400 font-light leading-relaxed">
+                    <p class="font-bold text-gray-300 mb-1 uppercase tracking-widest">Concept Store Flagship</p>
+                    <p>Rua Garcia d'Ávila, 100 - Ipanema</p>
+                    <p>Rio de Janeiro - RJ, Brasil</p>
+                    <p>CEP: 22421-010</p>
                 </div>
             </div>
-            
-            <div class="flex gap-16">
-                <div>
-                    <h4 class="font-bold text-xs uppercase tracking-widest mb-4">Loja</h4>
-                    <ul class="flex flex-col gap-3 text-sm text-gray-600 font-medium">
-                        <li><a href="#vitrine" class="hover:text-brand-black">Todos os Produtos</a></li>
-                        <li><a href="#" class="hover:text-brand-black">Camisetas Pima</a></li>
-                        <li><a href="#" class="hover:text-brand-black">Alfaiataria</a></li>
-                        <li><a href="#" class="hover:text-brand-black">Tênis Casuais</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-xs uppercase tracking-widest mb-4">Ajuda</h4>
-                    <ul class="flex flex-col gap-3 text-sm text-gray-600 font-medium">
-                        <li><a href="#" class="hover:text-brand-black">Dúvidas Frequentes</a></li>
-                        <li><a href="#" class="hover:text-brand-black">Trocas e Devoluções</a></li>
-                        <li><a href="#" class="hover:text-brand-black">Rastreio de Pedido</a></li>
-                        <li><a href="https://wa.me/5511999999999" class="hover:text-brand-black">Contato WhatsApp</a></li>
-                    </ul>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-[0.2em] text-[10px] mb-6 text-gray-300">Shop</h4>
+                <ul class="flex flex-col gap-3 text-xs text-gray-500 font-light">
+                    <li><a href="#" class="hover:text-white transition-colors">Novidades</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Alfaiataria</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Sapatos & Tênis</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Acessórios em Couro</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Alta Perfumaria</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-[0.2em] text-[10px] mb-6 text-gray-300">Atendimento</h4>
+                <ul class="flex flex-col gap-3 text-xs text-gray-500 font-light">
+                    <li><a href="#" class="hover:text-white transition-colors">FAQ & Dúvidas Frequentes</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Política de Trocas</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Rastrear Pedido</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Guia de Medidas</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-[0.2em] text-[10px] mb-6 text-gray-300">Contato Concierge</h4>
+                <ul class="flex flex-col gap-4 text-xs text-gray-500 font-light mb-8">
+                    <li class="flex items-center gap-3"><i class="fa-brands fa-whatsapp text-white text-lg"></i> (11) 99999-9999</li>
+                    <li class="flex items-center gap-3"><i class="fa-regular fa-envelope text-white text-lg"></i> concierge@theconcept.com</li>
+                    <li class="text-[10px]">Seg - Sex, das 09h às 19h</li>
+                </ul>
+                <div class="flex gap-5 text-xl text-gray-400">
+                    <a href="#" class="hover:text-white transition-transform hover:scale-110"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition-transform hover:scale-110"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" class="hover:text-white transition-transform hover:scale-110"><i class="fa-brands fa-pinterest-p"></i></a>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center md:text-left">
-                &copy; 2026 THE CONCEPT ESSENTIALS. CNPJ: 00.000.000/0001-00.
-            </p>
-            <div class="flex items-center gap-3 text-2xl text-gray-300">
-                <i class="fa-brands fa-cc-visa"></i>
-                <i class="fa-brands fa-cc-mastercard"></i>
-                <i class="fa-brands fa-pix"></i>
+        <div class="max-w-7xl mx-auto px-6 border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-[9px] text-gray-600 font-light tracking-[0.2em] uppercase text-center md:text-left">
+                <p>&copy; 2026 THE CONCEPT STORE. TODOS OS DIREITOS RESERVADOS.</p>
+                <p class="mt-1">CNPJ: 00.000.000/0001-00</p>
+            </div>
+            
+            <div class="flex items-center gap-4 text-2xl text-gray-500">
+                <i class="fa-brands fa-cc-visa" title="Visa"></i>
+                <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                <i class="fa-brands fa-cc-amex" title="American Express"></i>
+                <i class="fa-brands fa-pix" title="Pix"></i>
+                <i class="fa-brands fa-cc-apple-pay" title="Apple Pay"></i>
             </div>
         </div>
     </footer>
 
-    <!-- LÓGICA JAVASCRIPT (Aprovada e Estável) -->
+
+    <!-- ==========================================
+         LÓGICA JAVASCRIPT
+         ========================================== -->
     <script>
         const WHATSAPP_NUM = '5511999999999';
         const FRETE_GRATIS_MIN = 299.00;
 
         /* 
-         * BANCO DE DADOS (Imagens blindadas via Pexels CDN)
-         * Preços realistas para o mercado brasileiro de marcas D2C.
+         * 1. BANCO DE DADOS
+         * Imagens baseadas em URLs seguras Pexels/Unsplash,
+         * 100% atualizadas com a nova Jaqueta.
          */
         const produtos = [
-            { id: 'p_01', marca: 'Concept', nome: 'Camiseta Pima Essential Branca', macro: 'Roupas', preco: 89.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_02', marca: 'Concept', nome: 'Blazer Slim Fit Estruturado', macro: 'Roupas', preco: 349.90, tamanhos: ['46', '48', '50', '52'], img: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_03', marca: 'Denim', nome: 'Tênis sneaker básico', macro: 'Roupas', preco: 179.90, tamanhos: ['38', '40', '42', '44', '46'], img: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_04', marca: 'Stride', nome: 'Sneaker Runner Casual Branco', macro: 'Calçados', preco: 289.90, tamanhos: ['39', '40', '41', '42', '43'], img: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_05', marca: 'Tempus', nome: 'Relógio Cronógrafo Minimal', macro: 'Acessórios', preco: 329.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_06', marca: 'Grooming', nome: 'Eau de Parfum Wood & Pepper', macro: 'Grooming', preco: 219.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/1961557/pexels-photo-1961557.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_07', marca: 'Optics', nome: 'Óculos de Sol Aviador Gold', macro: 'Acessórios', preco: 149.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/701877/pexels-photo-701877.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_01', marca: 'Concept', nome: 'Camiseta Pima Essential Branca', macro: 'Roupas', preco: 89.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
+            { id: 'p_02', marca: 'Sartorial', nome: 'Blazer Slim Fit Lã Italiana', macro: 'Roupas', preco: 349.90, tamanhos: ['46', '48', '50', '52'], img: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_03', marca: 'Denim Co.', nome: 'Sneaker básico', macro: 'Roupas', preco: 179.90, tamanhos: ['38', '40', '42', '44', '46'], img: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_04', marca: 'UrbanStride', nome: 'Sneaker Runner Pro Onyx', macro: 'Calçados', preco: 289.90, tamanhos: ['39', '40', '41', '42', '43'], img: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_05', marca: 'Tempus', nome: 'Relógio Cronógrafo Aço Inox', macro: 'Acessórios', preco: 329.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_06', marca: 'Essência', nome: 'Eau de Parfum Wood 100ml', macro: 'Grooming', preco: 219.90, tamanhos: ['UN'], img: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
+            { id: 'p_07', marca: 'Lumina', nome: 'Óculos de Sol Aviador Gold', macro: 'Acessórios', preco: 149.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/701877/pexels-photo-701877.jpeg?auto=compress&cs=tinysrgb&w=600' },
             { id: 'p_08', marca: 'Firenze', nome: 'Mocassim Loafer Suede Café', macro: 'Calçados', preco: 229.90, tamanhos: ['39', '40', '41', '42'], img: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_09', marca: 'Rebel', nome: 'Jaqueta Biker Couro PU Premium', macro: 'Roupas', preco: 359.90, tamanhos: ['M', 'G', 'GG'], img: 'https://images.pexels.com/photos/1617003/pexels-photo-1617003.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_10', marca: 'Heritage', nome: 'Camisa Manga Longa Oxford', macro: 'Roupas', preco: 139.90, tamanhos: ['2', '3', '4', '5'], img: 'https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_11', marca: 'Concept', nome: 'Suéter Tricot Algodão Leve', macro: 'Roupas', preco: 159.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.pexels.com/photos/45982/pexels-photo-45982.jpeg?auto=compress&cs=tinysrgb&w=600' },
-            { id: 'p_12', marca: 'Voyager', nome: 'Mochila Executiva Lona Resistente', macro: 'Acessórios', preco: 199.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/3731256/pexels-photo-3731256.jpeg?auto=compress&cs=tinysrgb&w=600' }
+            
+            /* CORREÇÃO AQUI: Jaqueta de Couro perfeitamente funcional */
+            { id: 'p_09', marca: 'Rebel', nome: 'Jaqueta Biker Couro Genuíno', macro: 'Roupas', preco: 359.90, tamanhos: ['M', 'G', 'GG'], img: 'https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
+            
+            { id: 'p_10', marca: 'Heritage', nome: 'Camisa Oxford Classic Azul', macro: 'Roupas', preco: 139.90, tamanhos: ['2', '3', '4', '5'], img: 'https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_11', marca: 'Alpine', nome: 'Suéter Tricot Cashmere Blend', macro: 'Roupas', preco: 159.90, tamanhos: ['P', 'M', 'G', 'GG'], img: 'https://images.pexels.com/photos/45982/pexels-photo-45982.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 'p_12', marca: 'Voyager', nome: 'Mochila Executiva Lona/Couro', macro: 'Acessórios', preco: 199.90, tamanhos: ['UN'], img: 'https://images.pexels.com/photos/3731256/pexels-photo-3731256.jpeg?auto=compress&cs=tinysrgb&w=600' }
         ];
 
-        /* ESTADO E CACHE */
+        /* 
+         * 2. ESTADO E CACHE SEGURO 
+         */
         let carrinho = [];
-        try { carrinho = JSON.parse(localStorage.getItem('@Concept:cart2')) || []; } catch(e) { carrinho = []; }
-        let qvSelectedSize = null;
+        try { carrinho = JSON.parse(localStorage.getItem('@Concept:cart4')) || []; } catch(e) { carrinho = []; }
+        let quickViewSizeSelected = null;
 
         const formatMoney = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const saveCart = () => localStorage.setItem('@Concept:cart2', JSON.stringify(carrinho));
+        const saveCart = () => localStorage.setItem('@Concept:cart4', JSON.stringify(carrinho));
 
-        /* RENDERIZAÇÃO DA VITRINE */
+        /* 
+         * 3. RENDERIZAÇÃO E FILTROS 
+         */
         const renderGrid = (filtro = 'Todas') => {
             const grid = document.getElementById('product-grid');
             const empty = document.getElementById('empty-state');
@@ -408,7 +496,7 @@
             
             let lista = filtro === 'Todas' ? produtos : produtos.filter(p => p.macro === filtro);
             
-            document.getElementById('vitrine-title').innerText = filtro === 'Todas' ? 'Catálogo Completo' : filtro;
+            document.getElementById('vitrine-title').innerText = filtro === 'Todas' ? 'Catálogo Completo' : `Coleção ${filtro}`;
             count.innerText = `${lista.length} Peças`;
 
             if(lista.length === 0) {
@@ -424,17 +512,14 @@
             empty.classList.remove('flex');
 
             grid.innerHTML = lista.map((p, i) => `
-                <article class="product-card cursor-pointer fade-in group" style="animation-delay: ${i * 0.05}s" onclick="openQuickView('${p.id}')">
-                    <div class="aspect-[4/5] bg-gray-100 rounded mb-3 overflow-hidden relative">
-                        <img src="${p.img}" alt="${p.nome}" loading="lazy" class="product-img w-full h-full object-cover" referrerpolicy="no-referrer" crossorigin="anonymous">
-                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span class="bg-white text-black text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-sm shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all">Ver Detalhes</span>
-                        </div>
+                <article class="product-card cursor-pointer fade-in group" style="animation-delay: ${i * 0.04}s" onclick="openQuickView('${p.id}')">
+                    <div class="aspect-[4/5] bg-gray-100 rounded-sm mb-4 overflow-hidden relative">
+                        <img src="${p.img}" alt="${p.nome}" loading="lazy" class="product-img w-full h-full object-cover" referrerpolicy="no-referrer">
                     </div>
                     <div class="flex flex-col text-left px-1">
-                        <span class="text-[9px] font-extrabold uppercase tracking-widest text-gray-400 mb-1">${p.marca}</span>
-                        <h3 class="text-xs md:text-sm font-bold text-brand-dark leading-tight line-clamp-2 min-h-[2.2rem]">${p.nome}</h3>
-                        <p class="text-sm md:text-base font-extrabold text-brand-black mt-1">${formatMoney(p.preco)}</p>
+                        <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-1.5">${p.marca}</span>
+                        <h3 class="text-xs md:text-sm font-semibold text-brand-black leading-snug line-clamp-2 min-h-[2.5rem] group-hover:text-gray-500 transition-colors">${p.nome}</h3>
+                        <p class="text-sm md:text-base font-bold text-brand-dark mt-2">${formatMoney(p.preco)}</p>
                     </div>
                 </article>
             `).join('');
@@ -446,67 +531,72 @@
             renderGrid(macro);
         };
 
-        /* MODAL QUICK VIEW */
+        /* 
+         * 4. QUICK VIEW MODAL
+         */
         window.openQuickView = (id) => {
             const prod = produtos.find(p => p.id === id);
             if(!prod) return;
 
-            qvSelectedSize = null;
+            quickViewSizeSelected = null;
+            
             document.getElementById('qv-img').src = prod.img;
             document.getElementById('qv-brand').innerText = prod.marca;
             document.getElementById('qv-title').innerText = prod.nome;
             document.getElementById('qv-price').innerText = formatMoney(prod.preco);
-            document.getElementById('qv-installments').innerText = `6x de R$ ${(prod.preco/6).toFixed(2).replace('.',',')} s/ juros`;
+            document.getElementById('qv-installments').innerText = `6x de R$ ${(prod.preco/6).toFixed(2).replace('.',',')} sem juros`;
             document.getElementById('qv-id').value = prod.id;
 
             const sizesDiv = document.getElementById('qv-sizes');
             
             if(prod.tamanhos.length === 1 && prod.tamanhos[0] === 'UN') {
-                sizesDiv.innerHTML = `<button class="size-btn bg-brand-black text-white w-auto px-5 h-9 text-xs font-bold border border-brand-black rounded cursor-default">Tam. Único</button>`;
-                qvSelectedSize = 'UN'; 
+                sizesDiv.innerHTML = `<button class="size-btn bg-brand-black text-white w-auto px-6 h-10 text-xs font-bold border border-brand-black rounded-sm cursor-default">Tamanho Único</button>`;
+                quickViewSizeSelected = 'UN'; 
             } else {
                 sizesDiv.innerHTML = prod.tamanhos.map(t => `
-                    <button class="size-btn w-9 h-9 border border-gray-300 rounded text-xs font-bold text-gray-700 hover:border-black focus:outline-none transition-colors" onclick="selectSize('${t}', this)">${t}</button>
+                    <button class="size-btn w-10 h-10 border border-gray-300 rounded-sm text-xs font-semibold hover:border-brand-black focus:outline-none transition-colors" onclick="selectSize('${t}', this)">${t}</button>
                 `).join('');
             }
 
-            document.getElementById('overlay-quickview').classList.add('overlay-active');
-            document.getElementById('quickview-modal').classList.add('quickview-active');
+            const overlay = document.getElementById('overlay-global');
+            const modal = document.getElementById('quickview-modal');
+            overlay.classList.add('overlay-active');
+            modal.classList.add('quickview-active');
             document.body.style.overflow = 'hidden';
         };
 
         window.selectSize = (size, btn) => {
-            qvSelectedSize = size;
+            quickViewSizeSelected = size;
             document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected', 'bg-brand-black', 'text-white', 'border-brand-black'));
             btn.classList.add('selected', 'bg-brand-black', 'text-white', 'border-brand-black');
         };
 
         window.confirmAddToCart = () => {
-            if(!qvSelectedSize) {
-                showToast('Selecione um tamanho.', 'error'); return;
+            if(!quickViewSizeSelected) {
+                showToast('Por favor, selecione um tamanho antes.', 'error');
+                return;
             }
             const id = document.getElementById('qv-id').value;
             const prod = produtos.find(p => p.id === id);
-            const cartId = `${id}_${qvSelectedSize}`;
+            const cartId = `${id}_${quickViewSizeSelected}`;
             
             const idx = carrinho.findIndex(i => i.cartId === cartId);
             if(idx > -1) carrinho[idx].qty += 1;
-            else carrinho.push({ cartId, id: prod.id, marca: prod.marca, nome: prod.nome, preco: prod.preco, tam: qvSelectedSize, img: prod.img, qty: 1 });
+            else carrinho.push({ cartId, id: prod.id, marca: prod.marca, nome: prod.nome, preco: prod.preco, tam: quickViewSizeSelected, img: prod.img, qty: 1 });
 
             saveCart();
             renderCart();
             
             document.getElementById('quickview-modal').classList.remove('quickview-active');
-            document.getElementById('overlay-quickview').classList.remove('overlay-active');
-            
             setTimeout(() => {
-                document.getElementById('overlay-cart').classList.add('overlay-active');
                 document.getElementById('cart-drawer').classList.add('offcanvas-open');
-                showToast(`${prod.nome} na sacola!`);
-            }, 300);
+                showToast(`${prod.nome} adicionado!`);
+            }, 200);
         };
 
-        /* LÓGICA CARRINHO E FRETE GRÁTIS */
+        /* 
+         * 5. LÓGICA DO CARRINHO 
+         */
         const renderCart = () => {
             const container = document.getElementById('cart-items');
             const badge = document.getElementById('cart-badge');
@@ -515,12 +605,10 @@
             const freeShipBar = document.getElementById('free-shipping-bar');
             
             const totalItens = carrinho.reduce((acc, i) => acc + i.qty, 0);
-            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
-            
             badge.innerText = totalItens;
 
             if(carrinho.length === 0) {
-                container.innerHTML = `<div class="py-10 text-center text-gray-300 flex flex-col items-center"><i class="fa-solid fa-box-open text-3xl mb-3"></i><p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Sacola vazia</p></div>`;
+                container.innerHTML = `<div class="py-12 text-center text-gray-300 flex flex-col items-center"><i class="fa-solid fa-box-open text-4xl mb-4"></i><p class="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-400">Sua sacola está vazia</p></div>`;
                 btnCheck.disabled = true;
                 document.getElementById('cart-subtotal').innerText = 'R$ 0,00';
                 document.getElementById('cart-total').innerText = 'R$ 0,00';
@@ -530,32 +618,35 @@
             }
 
             btnCheck.disabled = false;
+            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+
             container.innerHTML = carrinho.map(c => `
-                <div class="flex gap-3 bg-white p-2.5 border border-gray-100 rounded shadow-sm relative">
-                    <img src="${c.img}" class="w-16 h-20 object-cover bg-gray-100 shrink-0 rounded-sm" referrerpolicy="no-referrer">
-                    <div class="flex flex-col flex-1 py-1 pr-5">
-                        <h4 class="text-[11px] font-bold text-brand-dark leading-tight">${c.nome}</h4>
-                        <p class="text-[10px] font-bold text-gray-400 mt-0.5">Tam: <span class="text-brand-black">${c.tam}</span></p>
+                <div class="flex gap-4 bg-white p-3 border border-gray-100 rounded-sm shadow-sm relative">
+                    <img src="${c.img}" class="w-20 h-24 object-cover bg-gray-100 shrink-0" referrerpolicy="no-referrer">
+                    <div class="flex flex-col flex-1 py-1 pr-6">
+                        <span class="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-1">${c.marca}</span>
+                        <h4 class="text-xs font-semibold text-brand-dark leading-snug line-clamp-2">${c.nome}</h4>
+                        <p class="text-[10px] font-bold text-gray-500 mt-1 uppercase">Tam: <span class="text-brand-black">${c.tam}</span></p>
                         
                         <div class="flex justify-between items-end mt-auto">
-                            <span class="font-extrabold text-xs text-brand-black">${formatMoney(c.preco)}</span>
-                            <div class="flex items-center border border-gray-200 rounded overflow-hidden">
-                                <button onclick="changeQty('${c.cartId}', -1)" class="w-6 h-6 bg-gray-50 hover:bg-gray-200 text-gray-700 flex items-center justify-center"><i class="fa-solid fa-minus text-[8px]"></i></button>
-                                <span class="w-6 text-[10px] font-bold text-center border-x border-gray-200 flex items-center justify-center">${c.qty}</span>
-                                <button onclick="changeQty('${c.cartId}', 1)" class="w-6 h-6 bg-gray-50 hover:bg-gray-200 text-gray-700 flex items-center justify-center"><i class="fa-solid fa-plus text-[8px]"></i></button>
+                            <span class="font-bold text-sm text-brand-black">${formatMoney(c.preco)}</span>
+                            <div class="flex items-center border border-gray-200 rounded-sm overflow-hidden">
+                                <button onclick="changeQty('${c.cartId}', -1)" class="w-7 h-7 bg-gray-50 hover:bg-gray-200 text-gray-600 flex items-center justify-center"><i class="fa-solid fa-minus text-[9px]"></i></button>
+                                <span class="w-7 text-[11px] font-medium text-center border-x border-gray-200 flex items-center justify-center">${c.qty}</span>
+                                <button onclick="changeQty('${c.cartId}', 1)" class="w-7 h-7 bg-gray-50 hover:bg-gray-200 text-gray-600 flex items-center justify-center"><i class="fa-solid fa-plus text-[9px]"></i></button>
                             </div>
                         </div>
                     </div>
-                    <button onclick="removeCart('${c.cartId}')" class="absolute top-2 right-2 text-gray-300 hover:text-red-500"><i class="fa-solid fa-xmark text-sm"></i></button>
+                    <button onclick="removeCart('${c.cartId}')" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 transition-colors p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
                 </div>
             `).join('');
 
-            // Progresso Frete
+            // Progresso de Frete
             const prog = Math.min((subtotal / FRETE_GRATIS_MIN) * 100, 100);
             freeShipBar.style.width = `${prog}%`;
             
             if(subtotal >= FRETE_GRATIS_MIN) {
-                freeShipMsg.innerHTML = `<span class="text-[#25D366] font-bold uppercase tracking-wide text-[10px]"><i class="fa-solid fa-truck-fast"></i> Parabéns! Frete Grátis Liberado</span>`;
+                freeShipMsg.innerHTML = `<span class="text-[#25D366] font-bold uppercase tracking-[0.1em] text-[10px]"><i class="fa-solid fa-truck-fast"></i> Frete Grátis Liberado</span>`;
                 freeShipBar.classList.replace('bg-brand-black', 'bg-[#25D366]');
             } else {
                 freeShipMsg.innerHTML = `Faltam <strong class="font-bold">${formatMoney(FRETE_GRATIS_MIN - subtotal)}</strong> para Frete Grátis`;
@@ -592,48 +683,53 @@
             document.getElementById('cart-total').innerText = formatMoney(sub + frete);
         };
 
-        /* CHECKOUT WHATSAPP */
+        /* 
+         * 6. CHECKOUT VIA WHATSAPP
+         */
         window.checkoutWhatsApp = () => {
             if(carrinho.length === 0) return;
 
-            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
-            let freteValor = 0;
-            let modoEntrega = "Retirada na Loja";
-            
             const freteInput = document.querySelector('input[name="frete"]:checked');
-            if(freteInput.value !== "0") {
-                modoEntrega = "Correios / Transportadora";
-                if(subtotal < FRETE_GRATIS_MIN) freteValor = parseFloat(freteInput.value);
-                else modoEntrega += " (Frete Grátis Aplicado)";
-            }
-            
-            const total = subtotal + freteValor;
+            const isRetirada = freteInput.value === "0";
+            const freteValor = parseFloat(freteInput.value);
+            const subtotal = carrinho.reduce((acc, c) => acc + (c.preco * c.qty), 0);
+            let total = subtotal;
+            let logistica = isRetirada ? 'Retirada Concept RJ' : 'Correios/Transportadora';
 
-            let msg = `*THE CONCEPT - NOVO PEDIDO* 📦\n\n`;
+            if(!isRetirada && subtotal < FRETE_GRATIS_MIN) {
+                total += freteValor;
+            } else if (!isRetirada && subtotal >= FRETE_GRATIS_MIN) {
+                logistica += " (Frete Grátis)";
+            }
+
+            let msg = `*THE CONCEPT STORE - NOVO PEDIDO* 🛍️\n\n`;
             carrinho.forEach((c, i) => {
-                msg += `*${i+1}.* ${c.nome}\n   Tam: ${c.tam} | Qtd: ${c.qty} | Sub: ${formatMoney(c.preco * c.qty)}\n\n`;
+                msg += `*${i+1}. [${c.marca}]* ${c.nome}\n`;
+                msg += `   Tam: ${c.tam} | Qtd: ${c.qty} | Sub: ${formatMoney(c.preco * c.qty)}\n\n`;
             });
 
             msg += `━━━━━━━━━━━━━━\n`;
-            msg += `*Entrega:* ${modoEntrega}\n`;
+            msg += `*Logística:* ${logistica}\n`;
             msg += `*Subtotal:* ${formatMoney(subtotal)}\n`;
-            if(freteValor > 0) msg += `*Frete:* ${formatMoney(freteValor)}\n`;
-            msg += `*TOTAL:* ${formatMoney(total)}\n`;
+            if(!isRetirada && subtotal < FRETE_GRATIS_MIN) msg += `*Frete:* ${formatMoney(freteValor)}\n`;
+            msg += `*TOTAL A PAGAR:* ${formatMoney(total)}\n`;
             msg += `━━━━━━━━━━━━━━\n\n`;
-            msg += `Olá! Meu pedido está pronto. Qual o link ou chave PIX para pagamento?`;
+            msg += `Olá, concierge! Gostaria de prosseguir com o pagamento deste pedido.`;
 
             const btn = document.getElementById('btn-checkout');
             const bkp = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Abrindo WhatsApp...`;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Processando...`;
             
             setTimeout(() => {
                 window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
                 btn.innerHTML = bkp;
                 closeModals();
-            }, 800);
+            }, 600);
         };
 
-        /* CONTROLES GERAIS E EVENTOS */
+        /* 
+         * 7. CONTROLES GERAIS DA APLICAÇÃO 
+         */
         window.closeModals = () => {
             document.querySelectorAll('.overlay').forEach(o => o.classList.remove('overlay-active'));
             document.querySelectorAll('.offcanvas').forEach(o => o.classList.remove('offcanvas-open'));
@@ -644,31 +740,40 @@
         window.showToast = (msg, type='success') => {
             const c = document.getElementById('toast-container');
             const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = `<i class="fa-solid ${type==='success'?'fa-circle-check text-[#25D366]':'fa-circle-exclamation text-red-500'} text-lg"></i> <div class="flex flex-col"><span class="text-[10px] font-bold uppercase tracking-widest text-brand-dark">${type==='success'?'Sucesso':'Atenção'}</span><span class="text-xs text-gray-500 font-medium">${msg}</span></div>`;
+            t.className = 'toast';
+            t.innerHTML = `<i class="fa-solid ${type==='success'?'fa-check text-[#25D366]':'fa-xmark text-red-600'} text-xl"></i> <div class="flex flex-col"><span class="text-[10px] font-bold uppercase tracking-widest text-brand-dark">${type==='success'?'Notificação':'Aviso'}</span><span class="text-xs text-gray-500 font-medium">${msg}</span></div>`;
             c.appendChild(t);
-            setTimeout(() => t.classList.add('show'), 50);
-            setTimeout(() => { t.classList.remove('show'); setTimeout(()=>t.remove(),400); }, 3000);
+            setTimeout(() => t.classList.add('show'), 100);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(()=>t.remove(), 500); }, 3500);
         };
 
+        // Listeners Essenciais
         document.getElementById('btn-menu').addEventListener('click', () => {
-            document.getElementById('overlay-menu').classList.add('overlay-active');
+            document.getElementById('overlay-global').classList.add('overlay-active');
             document.getElementById('mobile-menu').classList.add('offcanvas-open');
             document.body.style.overflow = 'hidden';
         });
 
         document.getElementById('btn-cart').addEventListener('click', () => {
-            document.getElementById('overlay-cart').classList.add('overlay-active');
+            document.getElementById('overlay-global').classList.add('overlay-active');
             document.getElementById('cart-drawer').classList.add('offcanvas-open');
             document.body.style.overflow = 'hidden';
         });
 
+        // Efeito Glassmorphism Dinâmico no Header
         window.addEventListener('scroll', () => {
             const h = document.getElementById('header');
-            if(window.scrollY > 10) h.classList.add('shadow-sm');
-            else h.classList.remove('shadow-sm');
+            if(window.scrollY > 20) {
+                h.classList.add('shadow-sm');
+                h.classList.remove('bg-white/95', 'backdrop-blur-md');
+                h.classList.add('bg-white');
+            } else {
+                h.classList.remove('shadow-sm', 'bg-white');
+                h.classList.add('bg-white/95', 'backdrop-blur-md');
+            }
         });
 
+        // Boot
         document.addEventListener('DOMContentLoaded', () => {
             renderGrid();
             renderCart();
